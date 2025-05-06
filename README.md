@@ -1,12 +1,30 @@
 ## 🛠️ Requisitos Previos
 
-1. **.NET SDK 8.0**: Tener instalado el SDK de .NET 8.0.  
-2. **Visual Studio 2022**
-3. **SQL Server**: Contar con una instancia de SQL Server para la base de datos (por ejemplo, SQL Server Express).
+1. **.NET SDK 8.0**
+2. **SQL Server**
 
 ##  Configuracion de base de datos 
 1.  Asegurarse que el usuario **'sa'** tenga permisos a la base **'persona_db'**, y su contraseña sea **'admin123'**
-2.  Ejecutar el DDl
+2.   Ejecutar el DML 
+   Archivo DML
+```
+-- Habilitar login 'sa' si está deshabilitado (solo si usas autenticación SQL Server)
+ALTER LOGIN sa ENABLE;
+GO
+
+-- Establecer o cambiar contraseña del usuario 'sa'
+ALTER LOGIN sa WITH PASSWORD = 'admin123!';
+GO
+
+-- Otorgar el rol db_owner al usuario 'sa'
+ALTER ROLE db_owner ADD MEMBER sa;
+GO
+
+
+```
+4.   Ejecutar el DDl
+
+
   ```
 -- Crear base de datos
   
@@ -56,30 +74,21 @@ GO
 
 ```
 
-Archivo DML
+
+
+## ⚙️ cambiar conexion a base de datos si es nesesario
+Ir a **bin\Release\net8.0** ir **appsettings.json** cambiar "Server=localhost\\SQLEXPRESS...." por su cadena de conexion a base de datos , asegurarse de que tenga Id y contraseña  con permisos para la base.  
+  **appsettings.json**
 ```
--- Habilitar login 'sa' si está deshabilitado (solo si usas autenticación SQL Server)
-ALTER LOGIN sa ENABLE;
-GO
-
--- Establecer o cambiar contraseña del usuario 'sa'
-ALTER LOGIN sa WITH PASSWORD = 'admin123!';
-GO
-
--- Otorgar el rol db_owner al usuario 'sa'
-ALTER ROLE db_owner ADD MEMBER sa;
-GO
-
-
+    "ConnectionStrings": {
+        "PersonaDb": "Server=localhost\\SQLEXPRESS;Database=persona_db;User Id=sa;Password=admin123;Trusted_Connection=True;TrustServerCertificate=true"
+    }
 ```
-## ⚙️ Compilación y Ejecución
+### 1. Ejecutar la Aplicación
+Ir a **bin\Release\net8.0** ejecutar **personapi-dotnet.exe**
 
-### 1. Compilar el Proyecto
-En Visual Studio, selecciona **Compilar > Compilar solución** o presiona `Ctrl + Shift + B`.
+### 2. Navegar hasta para acceder al servicio
 
-### 2. Ejecutar la Aplicación
-Presiona `F5` o selecciona **Depurar > Iniciar depuración** para ejecutar la aplicación.  
-La API estará disponible en:  
 [http://localhost:5150](http://localhost:5150)
 
 ### 3. Acceder a Swagger
