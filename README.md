@@ -56,6 +56,22 @@ GO
 
 ```
 
+Archivo DML
+```
+-- Habilitar login 'sa' si está deshabilitado (solo si usas autenticación SQL Server)
+ALTER LOGIN sa ENABLE;
+GO
+
+-- Establecer o cambiar contraseña del usuario 'sa'
+ALTER LOGIN sa WITH PASSWORD = 'admin123!';
+GO
+
+-- Otorgar el rol db_owner al usuario 'sa'
+ALTER ROLE db_owner ADD MEMBER sa;
+GO
+
+
+```
 ## ⚙️ Compilación y Ejecución
 
 ### 1. Compilar el Proyecto
