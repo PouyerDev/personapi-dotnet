@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Models.Entities;
 using personapi_dotnet.Models.Interfaces;
 
@@ -31,8 +32,21 @@ namespace personapi_dotnet.Models.Repositories
 
         public void Update(Profesion profesion)
         {
-            _context.Profesions.Update(profesion);
+            var existingProfesion = _context.Profesions.Find(profesion.Id);
+            if (existingProfesion != null)
+            {
+                // Actualizamos las propiedades de la entidad existente
+                _context.Entry(existingProfesion).CurrentValues.SetValues(profesion);
+            }
+            else
+            {
+                // Si no existe, la adjuntamos al contexto como modificada
+                _context.Profesions.Attach(profesion);
+                _context.Entry(profesion).State = EntityState.Modified;
+            }
         }
+
+
 
         public void Delete(int id)
         {
@@ -40,6 +54,7 @@ namespace personapi_dotnet.Models.Repositories
             if (profesion != null)
             {
                 _context.Profesions.Remove(profesion);
+                Save();
             }
         }
 

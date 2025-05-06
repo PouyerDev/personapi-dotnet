@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Models.Entities;
 using personapi_dotnet.Models.Interfaces;
 
@@ -31,7 +32,16 @@ namespace personapi_dotnet.Models.Repositories
 
         public void Update(Telefono telefono)
         {
-            _context.Telefonos.Update(telefono);
+            var existingTelefono = _context.Telefonos.Find(telefono.Num);
+            if (existingTelefono != null)
+            {
+                _context.Entry(existingTelefono).CurrentValues.SetValues(telefono);
+            }
+            else
+            {
+                _context.Telefonos.Attach(telefono);
+                _context.Entry(telefono).State = EntityState.Modified;
+            }
         }
 
         public void Delete(string num)
@@ -40,6 +50,7 @@ namespace personapi_dotnet.Models.Repositories
             if (telefono != null)
             {
                 _context.Telefonos.Remove(telefono);
+                Save();
             }
         }
 

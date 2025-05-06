@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using personapi_dotnet.Models.Entities;
 using personapi_dotnet.Models.Interfaces;
 
@@ -31,7 +32,16 @@ namespace personapi_dotnet.Models.Repositories
 
         public void Update(Estudio estudio)
         {
-            _context.Estudios.Update(estudio);
+            var existingEstudio = _context.Estudios.Find(estudio.IdProf, estudio.CcPer);
+            if (existingEstudio != null)
+            {
+                _context.Entry(existingEstudio).CurrentValues.SetValues(estudio);
+            }
+            else
+            {
+                _context.Estudios.Attach(estudio);
+                _context.Entry(estudio).State = EntityState.Modified;
+            }
         }
 
         public void Delete(int idProf, int ccPer)
@@ -40,6 +50,7 @@ namespace personapi_dotnet.Models.Repositories
             if (estudio != null)
             {
                 _context.Estudios.Remove(estudio);
+                Save();
             }
         }
 
