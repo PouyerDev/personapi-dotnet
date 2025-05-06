@@ -77,7 +77,7 @@ GO
 
 
 ## ⚙️ cambiar conexion a base de datos si es nesesario
-Ir a **bin\Release\net8.0** ir **appsettings.json** cambiar "Server=localhost\\SQLEXPRESS...." por su cadena de conexion a base de datos , asegurarse de que tenga Id y contraseña  con permisos para la base.  
+Ir al **Release.zip** **bin\Release\net8.0** ir **appsettings.json** cambiar "Server=localhost\\SQLEXPRESS...." por su cadena de conexion a base de datos , asegurarse de que tenga Id y contraseña  con permisos para la base.  
   **appsettings.json**
 ```
     "ConnectionStrings": {
